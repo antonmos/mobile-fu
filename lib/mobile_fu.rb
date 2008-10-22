@@ -17,7 +17,6 @@ module ActionController
     end
     
     module ClassMethods
-      
       # Add this to one of your controllers to use MobileFu.  
       #
       #    class ApplicationController < ActionController::Base 
@@ -32,7 +31,7 @@ module ActionController
         
       def has_mobile_fu(test_mode = false)
         include ActionController::MobileFu::InstanceMethods
-
+        
         if test_mode 
           before_filter :force_mobile_format
         else
@@ -70,10 +69,8 @@ module ActionController
       # the user has opted to use either the 'Standard' view or 'Mobile' view.
       
       def set_mobile_format
-        if is_mobile_device?
-          request.format = session[:mobile_view] == false ? :html : :mobile
-          session[:mobile_view] = true if session[:mobile_view].nil?
-        end
+        session[:mobile_view] = is_mobile_device? if session[:mobile_view].nil?
+        request.format = :mobile if session[:mobile_view]
       end
       
       # Returns either true or false depending on whether or not the format of the
